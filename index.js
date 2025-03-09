@@ -1,4 +1,4 @@
-import { getPosts } from "./api.js";
+import { getPosts, addPost } from "./api.js";
 import { renderAddPostPageComponent } from "./components/add-post-page-component.js";
 import { renderAuthPageComponent } from "./components/auth-page-component.js";
 import {
@@ -111,8 +111,32 @@ const renderApp = () => {
       appEl,
       onAddPostClick({ description, imageUrl }) {
         // @TODO: реализовать добавление поста в API
-        console.log("Добавляю пост...", { description, imageUrl });
-        goToPage(POSTS_PAGE);
+
+        if (!description || !imageUrl) {
+          if (!description && !imageUrl) {
+            alert("Пожалуйста, заполните описание и загрузите изображение.");
+          } else {
+            alert(!description ? "Пожалуйста, заполните описание." : "Пожалуйста, загрузите изображение.");
+          }
+          return;
+        }
+
+        document.getElementById("add-button").disabled = true; // Блокируем кнопку
+        document.getElementById("add-button").textContent = "Загрузка..."; // Меняем текст
+
+        addPost( { description, imageUrl, token: getToken() } )
+        .then(() => {
+          // Переход на страницу постов только после успешного добавления
+          goToPage(POSTS_PAGE);
+        })    
+       .catch((error) => {
+          console.error(error);
+          alert("Не удалось добавить пост. Попробуйте ещё раз.");
+        })
+        .finally(() => {
+          document.getElementById("add-button").disabled = false; // Разблокируем кнопку
+          document.getElementById("add-button").textContent = "Добавить"; // Возвращаем текст
+        });
       },
     });
   }
