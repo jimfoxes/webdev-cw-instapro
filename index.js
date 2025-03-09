@@ -67,11 +67,22 @@ export const goToPage = (newPage, data) => {
     }
 
     if (newPage === USER_POSTS_PAGE) {
+      return getPosts({ token: getToken(), userid: data.userId })
+      .then((newPosts) => {
+        page = USER_POSTS_PAGE;
+        posts = newPosts;
+        renderApp();
+      })
+      .catch((error) => {
+        console.error(error);
+        goToPage(POSTS_PAGE);
+      });
+
       // @@TODO: реализовать получение постов юзера из API
-      console.log("Открываю страницу пользователя: ", data.userId);
-      page = USER_POSTS_PAGE;
-      posts = [];
-      return renderApp();
+      // console.log("Открываю страницу пользователя: ", data.userId);
+      // page = USER_POSTS_PAGE;
+      // posts = [];
+      // return renderApp();
     }
 
     page = newPage;
@@ -110,7 +121,6 @@ const renderApp = () => {
     return renderAddPostPageComponent({
       appEl,
       onAddPostClick({ description, imageUrl }) {
-        // @TODO: реализовать добавление поста в API
 
         if (!description || !imageUrl) {
           if (!description && !imageUrl) {
@@ -148,9 +158,10 @@ const renderApp = () => {
   }
 
   if (page === USER_POSTS_PAGE) {
-    // @TODO: реализовать страницу с фотографиями отдельного пользвателя
-    appEl.innerHTML = "Здесь будет страница фотографий пользователя";
-    return;
+    return renderPostsPageComponent( { appEl }, user );
+    // // @TODO: реализовать страницу с фотографиями отдельного пользвателя
+    // appEl.innerHTML = "Здесь будет страница фотографий пользователя";
+    // return;
   }
 };
 
