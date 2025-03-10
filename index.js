@@ -158,7 +158,7 @@ const renderApp = () => {
   }
 
   if (page === USER_POSTS_PAGE) {
-    return renderPostsPageComponent( { appEl }, user );
+    return renderPostsPageComponent( { appEl, user: "user" } );
     // // @TODO: реализовать страницу с фотографиями отдельного пользвателя
     // appEl.innerHTML = "Здесь будет страница фотографий пользователя";
     // return;

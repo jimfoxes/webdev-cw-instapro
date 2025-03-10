@@ -2,13 +2,11 @@ import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage } from "../index.js";
 
-export function renderPostsPageComponent({ appEl }, user) {
+export function renderPostsPageComponent({ appEl, user }) {
 
   console.log("Актуальный список постов:", posts);
 
-  if (user) {
-    console.log("User")
-  }
+  
 
   const postsHtml = posts
     .map((post) => {
@@ -39,14 +37,25 @@ export function renderPostsPageComponent({ appEl }, user) {
     })
     .join("")
 
+  const postsUserHeader = `<div class="posts-user-header">
+                  <img src="${posts[0].user.imageUrl}" class="posts-user-header__user-image">
+                  <p class="posts-user-header__user-name">${posts[0].user.name}</p>
+                  </div>
+  `  
+
   const appHtml = `
                   <div class="page-container">
                       <div class="header-container"></div>
+                      ${user ? postsUserHeader : ""}
                       <ul class="posts">
                       ${postsHtml}
                       </ul>
+                      <br>
                   </div>    
   `
+
+  
+
 
   appEl.innerHTML = appHtml;
 
