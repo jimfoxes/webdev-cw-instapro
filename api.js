@@ -74,9 +74,6 @@ export function uploadImage({ file }) {
 }
 
 export function addPost( { description, imageUrl, token } ) {
-
-
-
   return fetch(postsHost + "/", {
     method: "POST",
     headers: {
@@ -93,3 +90,5 @@ export function addPost( { description, imageUrl, token } ) {
     return response.json();
   });
 }
+
+

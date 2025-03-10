@@ -1,17 +1,34 @@
 import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
-import { posts, goToPage } from "../index.js";
+import { posts, goToPage, user } from "../index.js";
 
-export function renderPostsPageComponent({ appEl, user }) {
+
+
+
+export function renderPostsPageComponent({ appEl, userPage }) {
 
   console.log("Актуальный список постов:", posts);
 
+  function renderLikesText(likes) {
+    const likesCount = likes.length;
   
+    if (likesCount === 0) {
+      return "0";
+    } else if (likesCount === 1) {
+      return `${likes[0].name}`;
+    } else {
+      const lastLikeUser = likes[likesCount - 1].name; // Имя последнего пользователя
+      const otherLikesCount = likesCount - 1; // Количество остальных лайков
+      return `${lastLikeUser} и ещё ${otherLikesCount}`;
+    }
+  }
 
   const postsHtml = posts
     .map((post) => {
+      const likesText = renderLikesText(post.likes);
+      const isLiked = post.isLiked;
       return `<li class="post">
-                  <div class="post-header" data-user-id="${post.user.id}" ${user ? 'style="display: none"' : ''}>
+                  <div class="post-header" data-user-id="${post.user.id}" ${userPage ? 'style="display: none"' : ''}>
                       <img src="${post.user.imageUrl}" class="post-header__user-image">
                       <p class="post-header__user-name">${post.user.name}</p>
                   </div>
@@ -20,10 +37,10 @@ export function renderPostsPageComponent({ appEl, user }) {
                   </div>
                   <div class="post-likes">
                       <button data-post-id="${post.id}" class="like-button">
-                          <img src="./assets/images/like-active.svg">
+                          <img src="./assets/images/${isLiked ? 'like-active.svg' : 'like-not-active.svg' }">
                       </button>
                       <p class="post-likes-text">
-                          Нравится: <strong>2</strong>
+                          Нравится: <strong>${likesText}</strong>
                       </p>
                   </div>
                       <p class="post-text">
@@ -46,7 +63,7 @@ export function renderPostsPageComponent({ appEl, user }) {
   const appHtml = `
                   <div class="page-container">
                       <div class="header-container"></div>
-                      ${user ? postsUserHeader : ""}
+                      ${userPage ? postsUserHeader : ""}
                       <ul class="posts">
                       ${postsHtml}
                       </ul>
