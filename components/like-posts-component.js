@@ -24,43 +24,7 @@ export const initLikeListeners = (renderPostsPageComponent, pageUserId) => {
     });
 };
 
-// export const initLikeListeners = (renderPostsPageComponent, pageUserId) => {
 
-//     console.log(page)
-
-//     const appEl = document.getElementById("app");
-
-//     const likeButtons = document.querySelectorAll('.like-button')
-//     likeButtons.forEach((button) => {
-//         button.addEventListener('click', (event) => {
-//             event.stopPropagation()
-//             const postId = button.dataset.postId
-//             const isLiked = button.dataset.isliked === "yes";
-
-//             // Выбор подходящей функции: disLike или addLike
-//             const likeAction = isLiked ? disLike : addLike;
-
-//             likeAction({ postID: postId, token: getToken() })
-//                 .then(() => {
-//                     if (page === "user-posts") {
-//                         return getPosts({ token: getToken(), userid: pageUserId })
-//                     } else {
-//                         return getPosts({ token: getToken() })
-//                     }
-                    
-//                 } )
-//                 .then((newPosts) => {
-//                     setPostsList(newPosts);
-//                     if ( page === "user-posts") {
-//                         return renderPostsPageComponent({ appEl, userPage: "user" });
-//                     } else {
-//                         return renderPostsPageComponent({ appEl });
-//                     }
-//                 });
-            
-//         })
-//     })
-// }
 
 export function renderLikesText(likes) {
     const likesCount = likes.length;

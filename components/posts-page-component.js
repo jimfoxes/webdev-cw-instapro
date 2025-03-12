@@ -2,6 +2,9 @@ import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage } from "../index.js";
 import { initLikeListeners, renderLikesText } from "./like-posts-component.js";
+import { formatDistanceToNow } from "date-fns";
+import { ru } from "date-fns/locale";
+import { initDelListeners } from "./del-post-component.js";
 
 
 
@@ -22,20 +25,28 @@ export function renderPostsPageComponent({ appEl, userPage }) {
                   <div class="post-image-container">
                       <img class="post-image" src="${post.imageUrl}">
                   </div>
-                  <div class="post-likes">
-                      <button data-post-id="${post.id}" data-isliked = "${isLiked ? 'yes' : 'no' }" class="like-button">
-                          <img src="./assets/images/${isLiked ? 'like-active.svg' : 'like-not-active.svg' }">
-                      </button>
-                      <p class="post-likes-text">
-                          Нравится: <strong>${likesText}</strong>
-                      </p>
+                  <div class="post-bottom">
+                    <div class="post-likes">
+                        <button data-post-id="${post.id}" data-isliked = "${isLiked ? 'yes' : 'no' }" class="like-button">
+                            <img src="./assets/images/${isLiked ? 'like-active.svg' : 'like-not-active.svg' }">
+                        </button>
+                        <p class="post-likes-text">
+                            Нравится: <strong>${likesText}</strong>
+                        </p>
+                    </div>
+                      <div class="menu-container">
+                        <button class="menu-button">...</button>
+                        <div class="menu hidden">
+                          <button data-post-id="${post.id}" class="menu-item del-button">Удалить</button>
+                        </div>
+                      </div>
                   </div>
                       <p class="post-text">
                           <span class="user-name">${post.user.name}</span>
                           ${post.description}
                       </p>
                       <p class="post-date">
-                      19 минут назад
+                      ${formatDistanceToNow(post.createdAt, {locale: ru})} назад
                       </p>
               </li>`
     })
@@ -60,6 +71,8 @@ export function renderPostsPageComponent({ appEl, userPage }) {
   `
 
   appEl.innerHTML = appHtml;
+
+  initDelListeners(renderPostsPageComponent)
 
   renderHeaderComponent({
     element: document.querySelector(".header-container"),

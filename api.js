@@ -92,7 +92,7 @@ export function addPost( { description, imageUrl, token } ) {
 }
 
 export function addLike( {postID, token} ) {
-  console.log(postID);
+  
   return fetch(postsHost + `/${postID}/like`, {
     method: "POST",
     headers: {
@@ -107,7 +107,7 @@ export function addLike( {postID, token} ) {
 }
 
 export function disLike( {postID, token} ) {
-  console.log(postID);
+  
   return fetch(postsHost + `/${postID}/dislike`, {
     method: "POST",
     headers: {
@@ -121,4 +121,18 @@ export function disLike( {postID, token} ) {
   });
 }
 
+export function delPost( {postID, token} ) {
+  
+  return fetch(postsHost + `/${postID}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: token,
+    },
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error(`Ошибка: ${response.status}`);
+    }
+    return response.json();
+  });
+}
 
