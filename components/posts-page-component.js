@@ -1,6 +1,7 @@
 import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
-import { posts, goToPage, user } from "../index.js";
+import { posts, goToPage } from "../index.js";
+import { initLikeListeners, renderLikesText } from "./like-posts-component.js";
 
 
 
@@ -8,20 +9,6 @@ import { posts, goToPage, user } from "../index.js";
 export function renderPostsPageComponent({ appEl, userPage }) {
 
   console.log("Актуальный список постов:", posts);
-
-  function renderLikesText(likes) {
-    const likesCount = likes.length;
-  
-    if (likesCount === 0) {
-      return "0";
-    } else if (likesCount === 1) {
-      return `${likes[0].name}`;
-    } else {
-      const lastLikeUser = likes[likesCount - 1].name; // Имя последнего пользователя
-      const otherLikesCount = likesCount - 1; // Количество остальных лайков
-      return `${lastLikeUser} и ещё ${otherLikesCount}`;
-    }
-  }
 
   const postsHtml = posts
     .map((post) => {
@@ -36,7 +23,7 @@ export function renderPostsPageComponent({ appEl, userPage }) {
                       <img class="post-image" src="${post.imageUrl}">
                   </div>
                   <div class="post-likes">
-                      <button data-post-id="${post.id}" class="like-button">
+                      <button data-post-id="${post.id}" data-isliked = "${isLiked ? 'yes' : 'no' }" class="like-button">
                           <img src="./assets/images/${isLiked ? 'like-active.svg' : 'like-not-active.svg' }">
                       </button>
                       <p class="post-likes-text">
@@ -58,7 +45,8 @@ export function renderPostsPageComponent({ appEl, userPage }) {
                   <img src="${posts[0].user.imageUrl}" class="posts-user-header__user-image">
                   <p class="posts-user-header__user-name">${posts[0].user.name}</p>
                   </div>
-  `  
+  `
+
 
   const appHtml = `
                   <div class="page-container">
@@ -71,14 +59,16 @@ export function renderPostsPageComponent({ appEl, userPage }) {
                   </div>    
   `
 
-  
-
-
   appEl.innerHTML = appHtml;
 
   renderHeaderComponent({
     element: document.querySelector(".header-container"),
   });
+
+  const pageUserId = posts[0].user.id  
+
+  initLikeListeners(renderPostsPageComponent, userPage ? pageUserId : undefined);
+
 
   for (let userEl of document.querySelectorAll(".post-header")) {
     userEl.addEventListener("click", () => {

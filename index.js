@@ -20,7 +20,11 @@ export let user = getUserFromLocalStorage();
 export let page = null;
 export let posts = [];
 
-const getToken = () => {
+export const setPostsList = (newPosts) => { // Сеттер
+    posts = newPosts;
+};
+
+export const getToken = () => {
   const token = user ? `Bearer ${user.token}` : undefined;
   return token;
 };
@@ -158,7 +162,7 @@ const renderApp = () => {
   }
 
   if (page === USER_POSTS_PAGE) {
-    return renderPostsPageComponent( { appEl, userPage: "user" } );
+    return renderPostsPageComponent( { appEl, userPage: true } );
     // // @TODO: реализовать страницу с фотографиями отдельного пользвателя
     // appEl.innerHTML = "Здесь будет страница фотографий пользователя";
     // return;
