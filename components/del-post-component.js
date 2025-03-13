@@ -1,7 +1,8 @@
-import { delPost } from "../api";
+import { delPost, getPosts } from "../api";
 import { getToken, setPostsList, page } from "../index.js";
 
-export const initDelListeners = () => {
+export const initDelListeners = (renderPostsPageComponent, pageUserId) => {
+    
   const menuButtons = document.querySelectorAll(".menu-button");
   const delButtons = document.querySelectorAll(".del-button");
 
@@ -21,7 +22,7 @@ export const initDelListeners = () => {
     }
   });
 
-  
+  const appEl = document.getElementById("app");
 
   delButtons.forEach((delButton) => {
     const postId = delButton.dataset.postId;
@@ -32,10 +33,7 @@ export const initDelListeners = () => {
         )
         .then((newPosts) => {
           setPostsList(newPosts);
-          renderPostsPageComponent({
-            appEl,
-            ...(page === "user-posts" && { userPage: true }),
-          });
+          renderPostsPageComponent({ appEl, ...(page === "user-posts" && { userPage: true }),  });
         })
         .catch((error) => console.error("Ошибка при удалении:", error));
     });

@@ -1,5 +1,6 @@
 .page-container {
-  padding: 0 20px;
+  padding-left: calc(50% - 500px);
+  padding-right: calc(50% - 500px);
 }
 
 .page-header {
@@ -248,3 +249,17 @@
   justify-content: space-between;
 }
 
+@media (max-width: 1040px) {
+  .page-container {
+      padding-left: calc(50% - 393px);
+      padding-right: calc(50% - 393px);
+  }
+
+}
+
+@media (max-width: 825px) {
+  .page-container {
+      padding-left: 16px;
+      padding-right: 16px;
+  }
+}

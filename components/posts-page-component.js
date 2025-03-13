@@ -1,13 +1,18 @@
 import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
-import { posts, goToPage } from "../index.js";
+import { posts, goToPage, user } from "../index.js";
 import { initLikeListeners, renderLikesText } from "./like-posts-component.js";
 import { formatDistanceToNow } from "date-fns";
 import { ru } from "date-fns/locale";
 import { initDelListeners } from "./del-post-component.js";
 
 
-
+let userId = () => { 
+  if (user) {
+    
+    return user._id;
+  }
+}
 
 export function renderPostsPageComponent({ appEl, userPage }) {
 
@@ -17,6 +22,7 @@ export function renderPostsPageComponent({ appEl, userPage }) {
     .map((post) => {
       const likesText = renderLikesText(post.likes);
       const isLiked = post.isLiked;
+      
       return `<li class="post">
                   <div class="post-header" data-user-id="${post.user.id}" ${userPage ? 'style="display: none"' : ''}>
                       <img src="${post.user.imageUrl}" class="post-header__user-image">
@@ -34,7 +40,7 @@ export function renderPostsPageComponent({ appEl, userPage }) {
                             Нравится: <strong>${likesText}</strong>
                         </p>
                     </div>
-                      <div class="menu-container">
+                      <div class="menu-container" ${ (userId() === post.user.id && userPage) ? '' : 'style="display: none"'}>
                         <button class="menu-button">...</button>
                         <div class="menu hidden">
                           <button data-post-id="${post.id}" class="menu-item del-button">Удалить</button>
@@ -51,7 +57,7 @@ export function renderPostsPageComponent({ appEl, userPage }) {
               </li>`
     })
     .join("")
-
+  
   const postsUserHeader = `<div class="posts-user-header">
                   <img src="${posts[0].user.imageUrl}" class="posts-user-header__user-image">
                   <p class="posts-user-header__user-name">${posts[0].user.name}</p>
@@ -71,8 +77,7 @@ export function renderPostsPageComponent({ appEl, userPage }) {
   `
 
   appEl.innerHTML = appHtml;
-
-  initDelListeners(renderPostsPageComponent)
+  
 
   renderHeaderComponent({
     element: document.querySelector(".header-container"),
@@ -81,7 +86,7 @@ export function renderPostsPageComponent({ appEl, userPage }) {
   const pageUserId = posts[0].user.id  
 
   initLikeListeners(renderPostsPageComponent, userPage ? pageUserId : undefined);
-
+  initDelListeners(renderPostsPageComponent, userPage ? pageUserId : undefined)
 
   for (let userEl of document.querySelectorAll(".post-header")) {
     userEl.addEventListener("click", () => {
