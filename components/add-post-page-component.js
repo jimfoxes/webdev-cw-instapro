@@ -2,6 +2,9 @@ import { renderHeaderComponent } from "./header-component.js";
 import { renderUploadImageComponent } from "./upload-image-component.js";
 
 
+const sanitizeHtml = (value) => {
+  return value.replaceAll('<', '&lt;').replaceAll('>', '&gt;')
+}
 
 export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
   const render = () => {
@@ -44,9 +47,12 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
       });
     }
 
+    let textareaValue = document.querySelector(".textarea").value
+
     document.getElementById("add-button").addEventListener("click", () => {
-      onAddPostClick({
-        description: document.querySelector(".textarea").value,
+      let textareaValue = document.querySelector(".textarea").value
+      onAddPostClick({        
+        description: sanitizeHtml(textareaValue),
         imageUrl: imageUrl,
       });
     });
