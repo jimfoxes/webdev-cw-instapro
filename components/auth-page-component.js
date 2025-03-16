@@ -1,6 +1,7 @@
 import { loginUser, registerUser } from "../api.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { renderUploadImageComponent } from "./upload-image-component.js";
+import { sanitizeHtml } from "./sanitizeHtml.js";
 
 /**
  * Компонент страницы авторизации.
@@ -125,8 +126,8 @@ export function renderAuthPageComponent({ appEl, setUser }) {
           });
       } else {
         // Обработка регистрации
-        const login = document.getElementById("login-input").value;
-        const name = document.getElementById("name-input").value;
+        const login = sanitizeHtml(document.getElementById("login-input").value);
+        const name = sanitizeHtml(document.getElementById("name-input").value);
         const password = document.getElementById("password-input").value;
 
         if (!name) {

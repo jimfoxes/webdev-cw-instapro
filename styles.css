@@ -1,5 +1,7 @@
 .page-container {
-  padding: 0 20px;
+  padding-left: calc(50% - 500px);
+  padding-right: calc(50% - 500px);
+  transition:  0.3s ease;
 }
 
 .page-header {
@@ -69,6 +71,7 @@
   display: flex;
   justify-content: center;
   background-color: #e0e0e0;
+  transition: width 0.3s ease, height 0.3s ease;
 }
 
 .post-image {
@@ -176,7 +179,7 @@
   text-align: center;
 }
 
-.file-upload-image-conrainer {
+.file-upload-image-container {
   display: flex;
   align-items: center;
 }
@@ -195,4 +198,108 @@
   box-sizing: border-box;
   width: 100%;
   text-align: center;
+}
+
+
+.menu-container {
+  position: relative;
+  display: inline-block;
+}
+
+.menu-button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  font-weight: bold
+}
+
+.menu-button:hover {
+  color:#acacac;
+}
+
+.menu {
+  position: absolute;
+  top: -35px;
+  right: 10px;
+  background: white;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  z-index: 10;
+  padding: 10px;
+}
+
+.menu.hidden {
+  display: none;
+}
+
+.menu-item {
+  background: none;
+  border: none;
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  color: #000000;
+}
+
+.menu-item:active {
+  background: #f0f0f0;
+}
+
+.post-bottom {
+  display: flex;
+  justify-content: space-between;
+}
+
+@media (max-width: 1040px) {
+  .page-container {
+      padding-left: calc(50% - 393px);
+      padding-right: calc(50% - 393px);
+  }
+
+}
+
+@media (max-width: 825px) and  (min-width: 580px){
+  .page-container {
+      padding-left: 16px;
+      padding-right: 16px;
+  }
+
+  .post-image-container {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+}
+
+@media (max-width: 499px) {
+  .post-image-container {
+    height: 400px;
+  }
+
+  .post-image {
+
+    max-width: 400px;
+}
+
+}
+
+
+@keyframes rotating {
+  from {
+     transform: rotate(0deg);
+  }
+  25% {
+     transform: rotate(30deg);;
+  }
+  75% {
+     transform: rotate(-30deg);;
+  }
+  to {
+     transform: rotate(0deg);
+  }
+}
+
+.like-Loading {
+  animation: rotating 2s linear infinite;
 }
