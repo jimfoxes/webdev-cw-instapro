@@ -16,8 +16,6 @@ let userId = () => {
 
 export function renderPostsPageComponent({ appEl, userPage }) {
 
-  console.log("Актуальный список постов:", posts);
-
   const postsHtml = posts
     .map((post) => {
       const likesText = renderLikesText(post.likes);

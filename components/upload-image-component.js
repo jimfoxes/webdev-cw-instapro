@@ -61,7 +61,14 @@ export function renderUploadImageComponent({ element, onImageUrlChange }) {
           imageUrl = fileUrl; // Сохраняем URL загруженного изображения
           onImageUrlChange(imageUrl); // Уведомляем о изменении URL изображения
           render(); // Перерисовываем компонент с новым состоянием
+        })
+        .catch(error => {
+          if (error.message === 'Only image files are allowed') {
+            alert("Возможно загружать только изображения");
+          }
+          render();
         });
+        ;
       }
     });
 

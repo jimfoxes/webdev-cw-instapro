@@ -69,6 +69,12 @@ export function uploadImage({ file }) {
     method: "POST",
     body: data,
   }).then((response) => {
+    if (!response.ok) {
+      return response.json().then(errorData => { 
+        throw new Error(errorData.error);
+
+      });
+    }
     return response.json();
   });
 }
@@ -100,7 +106,9 @@ export function addLike( {postID, token} ) {
     },
   }).then((response) => {
     if (!response.ok) {
-      throw new Error(`Ошибка: ${response.status}`);
+      return response.json().then(errorData => { 
+        throw new Error(errorData.error);
+      });
     }
     return response.json();
   });

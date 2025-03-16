@@ -4,11 +4,13 @@ import { getToken, setPostsList, page, user } from "../index.js";
 export const initLikeListeners = (renderPostsPageComponent, pageUserId) => {
   const appEl = document.getElementById("app");
 
-  
-  appEl.addEventListener("click", (event) => {
-    const button = event.target.closest(".like-button");
-    if (!button) return;
 
+ 
+  
+  const buttons = document.querySelectorAll('.like-button')
+
+  buttons.forEach(button => {
+    button.addEventListener("click", (event) => {
     event.stopPropagation();
 
     const postId = button.dataset.postId;
@@ -33,9 +35,17 @@ export const initLikeListeners = (renderPostsPageComponent, pageUserId) => {
           ...(page === "user-posts" && { userPage: true }),
         });
       })
-      .catch((error) => console.error("Ошибка при обработке лайка:", error));
+      .catch((error) => {
+        if (error.message === 'Нет авторизации') {
+          alert("Пожалуйста авторизуйтесь чтобы поставить лайк");
+        }
+      });
+
+    });
+
   });
-  
+
+
 };
 
 export function renderLikesText(likes) {

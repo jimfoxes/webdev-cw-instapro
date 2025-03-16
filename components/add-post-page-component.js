@@ -1,14 +1,12 @@
 import { renderHeaderComponent } from "./header-component.js";
+import { sanitizeHtml } from "./sanitizeHtml.js";
 import { renderUploadImageComponent } from "./upload-image-component.js";
 
 
-const sanitizeHtml = (value) => {
-  return value.replaceAll('<', '&lt;').replaceAll('>', '&gt;')
-}
+
 
 export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
   const render = () => {
-    // @TODO: Реализовать страницу добавления поста
 
     let imageUrl = "";
 
@@ -46,8 +44,6 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
         },
       });
     }
-
-    let textareaValue = document.querySelector(".textarea").value
 
     document.getElementById("add-button").addEventListener("click", () => {
       let textareaValue = document.querySelector(".textarea").value
